@@ -1,0 +1,48 @@
+Projecte PROP: Subgrup 41.4
+===========================
+Nil Camps / Imanol Rodriguez / Carlos Lopez / Arnau Rodriguez / Jaume Rossell
+--- MENÚ PRINCIPAL ---
+Escull una de les 3 opcions amb el número corresponent
+1 - Cargar Hidato
+2 - Validar Hidato
+3 - Resolver Hidato (Solución única)
+4 - Acabar prova
+Vols llegir el hidato amb un fitxer (1) o per terminal (2)?
+Entra el taulell a validar per la terminal
+
+Imprimint taulell: 
+Q,C,3,3
+1,2,3
+8,9,4
+7,6,5
+
+--- MENÚ PRINCIPAL ---
+Escull una de les 3 opcions amb el número corresponent
+1 - Cargar Hidato
+2 - Validar Hidato
+3 - Resolver Hidato (Solución única)
+4 - Acabar prova
+Entra el taulell a validar per la terminal
+
+Hidato correcte ara mirem si té solució única
+Té solució única
+--- MENÚ PRINCIPAL ---
+Escull una de les 3 opcions amb el número corresponent
+1 - Cargar Hidato
+2 - Validar Hidato
+3 - Resolver Hidato (Solución única)
+4 - Acabar prova
+Entra el taulell a resoldre per la terminal
+
+Imprimint taulell: 
+Q,C,3,3
+1,2,3
+8,9,4
+7,6,5
+
+--- MENÚ PRINCIPAL ---
+Escull una de les 3 opcions amb el número corresponent
+1 - Cargar Hidato
+2 - Validar Hidato
+3 - Resolver Hidato (Solución única)
+4 - Acabar prova

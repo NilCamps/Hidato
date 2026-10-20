@@ -1,0 +1,423 @@
+DOCUMENTACIÓ DE LA INTERFÍCIE GRÀFICA - HIDATO
+Subgrup 41.4 - PROP (FIB-UPC)
+===============================================================
+
+
+1. TECNOLOGIA UTILITZADA
+-------------------------
+
+La interfície gràfica s'ha implementat íntegrament amb Java Swing i Java AWT,
+sense cap ús de tecnologies web (HTML, CSS o JavaScript). Totes les classes
+pertanyen al paquet "presentacio" i es troben a Fonts/src/presentacio/.
+
+Llibreries utilitzades:
+  - javax.swing.*  (components gràfics: JFrame, JPanel, JButton, JDialog, etc.)
+  - java.awt.*     (gràfics 2D, colors, fonts, layouts)
+  - java.awt.geom.* (formes geomètriques per als efectes visuals)
+
+
+2. ARQUITECTURA GENERAL
+------------------------
+
+La interfície segueix el patró de navegació per CardLayout gestionat per
+la classe AppFrame.
+
+AppFrame (JFrame principal)
+  └── JPanel (CardLayout)
+        ├── VistaInicial        → clau "inici"
+        ├── VistaPerfil         → clau "perfil"
+        ├── VistaMenu           → clau "menu"
+        ├── VistaRepositoris    → clau "repositoris"
+        ├── VistaHidato         → clau "hidato"
+        ├── VistaPartidaInicial → clau "partidaInicial"
+        ├── VistaConfigPartida  → clau "configPartida"
+        └── VistaJoc            → clau "joc"
+
+Creació lazy de pantalles:
+  Les pantalles no es creen totes a l'inici. Cada pantalla es crea i s'afegeix
+  al CardLayout la primera vegada que l'usuari hi navega. Això millora el temps
+  d'arrencada i evita crear objectes innecessaris.
+
+  Exemple de navegació (des de VistaMenu cap a VistaRepositoris):
+    VistaRepositoris vr = new VistaRepositoris(frame);
+    frame.afegirPantalla(vr, "repositoris");
+    frame.mostrarPantalla("repositoris");
+
+AppFrame:
+  - Conté una instància de CtrlDomini (punt d'accés al domini).
+  - Conté el Perfil de l'usuari actiu (usuariActual).
+  - Mètodes públics: mostrarPantalla(String), afegirPantalla(JPanel, String),
+    getCtrlDomini(), getUsuariActual(), setUsuariActual(Perfil).
+
+
+3. DISSENY VISUAL
+------------------
+
+3.1 Paleta de colors (tema blau fosc)
+
+  Color de fons superior:    RGB(10, 20, 55)       → blau molt fosc
+  Color de fons inferior:    RGB(3, 8, 25)         → quasi negre blavós
+  Fons targetes:             RGB(18, 32, 75)
+  Fons targetes (hover):     RGB(28, 50, 110)
+  Color accent (valors):     RGB(100, 160, 255)    → blau clar
+  Botons normals:            RGB(50, 120, 220)     → blau
+  Botons (hover):            RGB(80, 155, 255)     → blau més clar
+  Botons sortir:             RGB(160, 45, 45)      → vermell fosc
+  Text principal:            Blanc
+  Text secundari:            RGB(160, 185, 230)    → blau grisós
+  Missatge OK:               RGB(100, 220, 130)    → verd
+  Missatge error:            RGB(255, 100, 100)    → vermell
+  Missatge avís:             RGB(255, 200, 80)     → groc
+
+3.2 Fons gradient
+
+  Totes les pantalles principals hereten JPanel i sobreescriuen paintComponent
+  per dibuixar un gradient vertical de dalt a baix:
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setPaint(new GradientPaint(0, 0, BG_TOP, 0, getHeight(), BG_BOT));
+        g2.fillRect(0, 0, getWidth(), getHeight());
+    }
+
+  Tots els panells que formen part d'una vista principal tenen setOpaque(false)
+  per deixar veure el gradient del pare.
+
+3.3 Botons personalitzats
+
+  Tots els botons es creen amb el mètode estàtic VistaInicial.crearBoto(),
+  compartit per totes les vistes. Cada botó sobreescriu paintComponent per:
+    - Pintar el fons arrodonit (fillRoundRect) amb el color normal o hover.
+    - Dibuixar el text centrat manualment amb FontMetrics.
+    - Mostrar cursor de mà (HAND_CURSOR) en passar el ratolí.
+
+3.4 Targetes clicables
+
+  Algunes pantalles (VistaHidato, VistaPartidaInicial) mostren targetes
+  grans clicables en lloc de botons. S'implementen com a JPanel amb:
+    - MouseListener per detectar entrada/sortida del ratolí i clics.
+    - paintComponent per pintar cantonades arrodonides i efecte hover.
+    - setCursor(HAND_CURSOR) per indicar que és clicable.
+
+3.5 Toggle buttons (VistaConfigPartida)
+
+  Per a la selecció de mode, dificultat, forma i adjacència s'utilitzen
+  JToggleButton agrupats en ButtonGroup. Cada botó sobreescriu paintComponent
+  per mostrar l'estat seleccionat/no seleccionat amb colors diferenciats i
+  vora de color accent quan està actiu.
+
+
+4. DESCRIPCIÓ DE CADA PANTALLA
+--------------------------------
+
+PANTALLA 1 - VistaInicial
+  Pantalla de benvinguda del joc.
+  Contingut:
+    - Títol "HIDATO" en font Serif Bold 110pt.
+    - Subtítol "Projecte de Programació · PROP".
+    - Línia decorativa horitzontal.
+    - Botó "INICIAR" que navega a VistaPerfil.
+  Implementació especial:
+    - Conté el mètode estàtic crearBoto() que utilitzen totes les altres vistes.
+
+PANTALLA 2 - VistaPerfil
+  Pantalla de gestió d'accés: crear o carregar perfil.
+  Contingut:
+    - Dues targetes clicables: "Crear Perfil" i "Carregar Perfil".
+    - Botó "Sortir del Joc" (vermell).
+  Pop-up Crear Perfil (420×600 px):
+    - Camps: Nom, Cognoms, Nom d'usuari, Contrasenya, Confirmar contrasenya.
+    - Validació client-side (camps buits, contrasenyes no coincidents).
+    - Crida: ctrlDomini.crearPerfil(nom, cognoms, username, pass1, pass2).
+    - En èxit: navega a VistaMenu.
+  Pop-up Carregar Perfil (400×340 px):
+    - Camps: Nom d'usuari, Contrasenya.
+    - Crida: ctrlDomini.cargarPerfil(username, password).
+    - En èxit: navega a VistaMenu.
+  Missatges d'error en vermell inline (sense pop-up d'alerta).
+
+PANTALLA 3 - VistaMenu
+  Menú principal dividit verticalment en dues meitats.
+  Panell esquerre (estadístiques en temps real):
+    - Nom i username de l'usuari actiu.
+    - 4 targetes d'estadística: Partides Jugades, Completades,
+      Puntuació Mitjana, Millor Puntuació.
+    - Valors obtinguts de: perfil.getEstadistiques().
+    - El mètode actualitzarEstadistiques(AppFrame) és públic i es pot
+      cridar des d'altres pantalles per refrescar les dades.
+  Panell dret (navegació):
+    - 4 botons: Editar Perfil, Veure Repositoris, Hidato, Partida.
+    - Botó "Sortir del Joc" (vermell).
+  Pop-up Editar Perfil (430×530 px amb JScrollPane):
+    - Secció 1: editar Nom i Cognoms → ctrlDomini.editarDadesPersonals().
+    - Secció 2: canviar contrasenya → ctrlDomini.editarPassword().
+    - Missatges de feedback en verd (OK) o vermell (error).
+
+PANTALLA 4 - VistaRepositoris
+  Mostra tots els hidatos disponibles al sistema.
+  Cas buit: icona i missatge "No hi ha hidatos al repositori".
+  Cas amb dades: JTable amb estil personalitzat.
+    - Columnes: Codi | Forma | Adjacència | Caselles | Mida (F×C).
+    - Files amb color alternat (blau fosc / blau molt fosc).
+    - Capçalera amb color diferent i text en accent.
+    - Scrollbar amb tema fosc.
+  Formats: QUADRAT→"Quadrat", TRIANGLE→"Triangle", HEXAGON→"Hexàgon";
+           C→"Cares", CA→"Cares i Angles".
+  Botó "← Enrere" → torna a VistaMenu.
+  Dades obtingudes: ctrlDomini.getHidatos() → HashMap<Integer, Taulell>.
+
+PANTALLA 5 - VistaHidato
+  Operacions sobre hidatos: validar i comprovar.
+  Contingut:
+    - Dues targetes clicables: "Validar Hidato" i "Comprovar Hidato".
+    - Botó "← Enrere" → torna a VistaMenu.
+  Pop-up Validar Hidato (420×340 px):
+    - Camp per introduir el codi de l'hidato.
+    - Tooltip amb codis disponibles (ctrlDomini.getHidatos().keySet()).
+    - Crida: ctrlDomini.validarHidato(codi) → String descriptiu.
+    - Resposta en verd (vàlid + solució única), groc (vàlid sense solució
+      única) o vermell (estructura invàlida / no existeix).
+  Pop-up Comprovar Hidato (470×340 px):
+    - Mateixa estructura.
+    - Crida: ctrlDomini.comprovarHidato(codi) → String descriptiu.
+    - Resposta en verd (correcte), groc (incomplet) o vermell (incorrecte).
+
+PANTALLA 6 - VistaPartidaInicial
+  Punt d'entrada per iniciar o reprendre una partida.
+  Contingut:
+    - Targeta "▶ Partida Nova" → navega a VistaConfigPartida.
+    - Targeta "↺ Carregar Partida" → obre pop-up de selecció.
+    - Botó "← Enrere" → torna a VistaMenu.
+  Pop-up Carregar Partida (460 px):
+    - Cas sense partides: missatge "No hi ha partides guardades."
+    - Cas amb partides: JList seleccionable + botó Carregar → navega a VistaJoc.
+    - Dades obtingudes: ctrlDomini.getPartidesGuardades() → List<String>.
+    Nota: la persistència de partides guardades és pendent d'implementació
+    per part d'altres membres del grup (PartidesGuardades.java buit).
+
+PANTALLA 7 - VistaConfigPartida
+  Configuració completa de la nova partida.
+  Layout de dues columnes:
+  Columna esquerra:
+    - Mode de joc (toggle): Normal | Supervivència | Contrarrellotge.
+      Si es tria Contrarrellotge, apareix un camp per al temps límit (minuts).
+    - Dificultat (toggle): Fàcil | Mig | Difícil.
+      Targeta informativa que mostra pistes disponibles, opció d'undo i
+      multiplicador de puntuació per a cada dificultat:
+        Fàcil   → 5 pistes, undos activats, ×1.0
+        Mig     → 3 pistes, undos activats, ×1.5
+        Difícil → 0 pistes, sense undos,    ×2.0
+  Columna dreta:
+    - Forma (toggle): Quadrat | Triangle | Hexàgon.
+    - Adjacència (toggle): Cares | Cares i Angles.
+    - Nombre de caselles: camp de text amb mínim dinàmic segons dificultat:
+        Fàcil → mínim 9  caselles
+        Mig   → mínim 16 caselles
+        Difícil → mínim 25 caselles
+    - Codi del hidato: camp de text opcional. Si es deixa buit, s'usa qualsevol
+      hidato disponible que coincideixi amb la forma. Si s'introdueix un codi,
+      es valida que existeixi a ctrlDomini.getHidatos() i s'usa aquell específic.
+  Validació en clicar "Confirmar →":
+    - Comprova que el nombre de caselles sigui ≥ mínim de la dificultat.
+    - Comprova que el temps (si Contrarrellotge) sigui un enter positiu.
+    - Si s'ha introduït un codi d'hidato, comprova que existeixi al repositori.
+    - En cas d'error, mostra missatge en vermell sense tancar la pantalla.
+  Botons: "← Enrere" → torna a VistaPartidaInicial; "Confirmar →" → VistaJoc.
+
+PANTALLA 8 - VistaJoc
+  Pantalla de joc jugable completa.
+
+  Constructors:
+    VistaJoc(AppFrame, TPartida, int difIdx, int tempsMins)
+    VistaJoc(AppFrame, TPartida, int difIdx, int tempsMins, TForma)
+    VistaJoc(AppFrame, TPartida, int difIdx, int tempsMins, TForma, int codiHidato)
+    - Si codiHidato > 0, usa aquell hidato específic del repositori.
+    - Si codiHidato == 0 (o forma donada), selecciona el primer hidato que
+      coincideixi amb la TForma. Si no n'hi ha cap, usa qualsevol disponible.
+    - Si no hi ha hidatos vàlids amb solució, mostra missatge d'error i botó
+      "← Enrere".
+
+  Layout (BorderLayout):
+  ┌─────────────────────────────────────────────────────┐
+  │  HIDATO #N — Mode          Errors/Vides       ⏱    │ ← NORTH (top bar)
+  ├─────────────────────────────────────────────────────┤
+  │                                                     │
+  │              Graella del taulell                    │ ← CENTER (grid)
+  │                                                     │
+  ├─────────────────────────────────────────────────────┤
+  │          [Pista (N)]  [Desfer]  [Confirmar]  [Pausa]│ ← SOUTH (botons)
+  └─────────────────────────────────────────────────────┘
+
+  Barra superior (NORTH) — GridLayout(1,3) per centrat perfecte:
+    - Columna esquerra: "HIDATO #codi — NomMode" en Serif Bold 22pt.
+    - Columna central: errors (Normal/Contrarrellotge) o vides (Supervivència)
+      en SansSerif Bold 16pt, centrat exacte gràcies al GridLayout.
+    - Columna dreta: timer en Monospaced Bold 22pt, alineat a la dreta.
+      · Normal/Supervivència: compta amunt (00:00, 00:01, …).
+      · Contrarrellotge: compta enrere; es posa vermell quan queden ≤30s.
+
+  Graella central (CENTER):
+    - GridLayout(files, columnes, 3, 3) centrat amb GridBagLayout.
+    - Renderitzat adaptat a la forma del taulell (TForma):
+        · QUADRAT  → RoundRectangle2D arrodonida.
+        · TRIANGLE → Polygon triangular; (i+j)%2==0 = vèrtex amunt,
+                     (i+j)%2==1 = vèrtex avall.
+        · HEXAGON  → Polygon hexagonal de 6 vèrtexs.
+    - El mètode contains(x,y) es sobreescriu per usar la forma real (lastShape),
+      evitant que els clics en zones buides del bounding box activin la cel·la.
+    - Colors de cel·la:
+        · Fora d'àrea (null): transparent, no captura clics.
+        · Forat: RGB(4,8,22).
+        · Pista inicial: RGB(25,65,155), text blanc, no editable.
+        · Buida editable: RGB(12,28,78), clicable.
+        · Omplerta editable: RGB(18,52,128), número en blau clar.
+        · Seleccionada: RGB(10,35,100) + vora groga RGB(255,220,60).
+    - Buffer de dígits: mentre l'usuari escriu, el número parcial apareix
+      en groc sobre la cel·la seleccionada.
+    - Flash en confirmar:
+        · Correcte → fons verd RGB(40,170,80) durant 500ms.
+        · Incorrecte → fons vermell RGB(190,45,45) durant 500ms.
+
+  Entrada de números (teclat):
+    1. Clic sobre una cel·la editable → es selecciona (vora groga).
+    2. L'usuari escriu dígits amb el teclat → s'acumulen al buffer.
+    3. Clicar "Confirmar" o prémer Enter → confirma el número.
+    4. Backspace → esborra el buffer (o la cel·la si el buffer és buit).
+    5. Delete → buida la cel·la directament.
+    6. Escape → deselecciona sense confirmar.
+    - Implementat amb InputMap/ActionMap WHEN_IN_FOCUSED_WINDOW.
+    - El buffer no té auto-commit: l'usuari sempre confirma explícitament.
+
+  Botons de control (SOUTH — FlowLayout dreta):
+    - "Pista (N)": crida partida.donarPistes(). Es desactiva a N=0.
+    - "Desfer": restaura l'últim moviment de undoStack. Desactivat si
+      la dificultat no permet undos (Difícil).
+    - "Confirmar" (verd): confirma el número del buffer a la cel·la seleccionada.
+    - "Pausa": atura el timer → diàleg personalitzat (JDialog estilitzat).
+
+  Menú de pausa (JDialog estilitzat, modal):
+    - Fons gradient blau fosc (igual que la resta de l'app).
+    - Mostra el temps transcorregut.
+    - Tres botons:
+        · "Continuar" (verd): reprèn la partida i el timer.
+        · "Guardar partida" (blau): desa la partida (stub pendent de
+          PartidesGuardades) i reprèn.
+        · "Sortir" (vermell): acaba la partida i torna al menú.
+
+  Fi de partida (JDialog estilitzat, modal):
+    - Victòria: títol "Felicitats!" en groc or.
+    - Derrota/sortida: títol "Fi de la partida" en vermell.
+      Motiu de fi (temps esgotat / vides perdudes / sortida voluntària).
+    - Mostra: puntuació final en blanc gran, temps total en blau.
+    - Botó "Tornar al menú" → tanca el diàleg i navega a VistaMenu.
+    - Crida: partida.calcularPuntuacio() + ctrlDomini.partidaFinalitzada(punts).
+    - Modes específics:
+        · Contrarrellotge: fi quan getTempsRestantSegons() == 0.
+        · Supervivència: fi quan getNvides() == 0.
+        · Normal: fi quan checkCompletat() == true.
+
+  Undo (pila de moviments):
+    - undoStack: Deque<int[]> → cada entrada és {x, y, valorAnterior}.
+    - "Desfer" restaura la cel·la al valor anterior.
+
+  Timer (javax.swing.Timer, interval 1000ms):
+    - Actualitza lblTimer cada segon mentre !partidaAcabada.
+    - S'atura en pausar, es reprèn en continuar, s'atura en acabar.
+
+
+5. INTEGRACIÓ AMB EL DOMINI
+-----------------------------
+
+Mètodes afegits a CtrlDomini per donar suport a la GUI:
+
+  getUsuariActual()                           → Perfil
+    Retorna el perfil de l'usuari amb sessió activa.
+
+  getHidatos()                                → HashMap<Integer, Taulell>
+    Retorna tots els hidatos disponibles al directori.
+
+  validarHidato(int codi)                     → String
+    Retorna missatge: "vàlid i té solució única" / "vàlid però sense solució
+    única" / "estructura invàlida" / "no existeix".
+
+  comprovarHidato(int codi)                   → String
+    Retorna missatge a partir de ComprovarHidato.Resultat:
+    CORRECTE / NO_COMPLET / ESTRUCTURA_INVALIDA / SOLUCIO_INCORRECTA.
+
+  editarDadesPersonals(String nom, String cognoms) → boolean
+    Actualitza nom i cognoms de l'usuari actiu.
+
+  editarPassword(String antiga, String nova, String conf) → boolean
+    Canvia la contrasenya si l'antiga és correcta i nova == conf.
+
+  getPartidesGuardades()                      → List<String>
+    Retorna les partides guardades de l'usuari actiu (stub buit per ara).
+
+  getHidatoSolucio(int codi)                 → Taulell
+    Retorna el taulell resolt precalculat corresponent al codi donat.
+    Usat per VistaJoc per crear la instància de Partida.
+
+  carregarHidatosInicials()                  (privat, cridat al constructor)
+    Carrega 4 hidatos de prova per permetre l'execució sense CrearHidato:
+      Codi 1: QUADRAT  3×3, cares       — 4 caselles buides
+      Codi 2: QUADRAT  4×4, cares       — 8 caselles buides
+      Codi 3: TRIANGLE 2×6, cares+angles — 4 caselles buides (camí serp verificat)
+      Codi 4: HEXÀGON  3×4, cares       — 3 caselles buides (camí lineal verificat)
+    Quan CrearHidato estigui implementat, aquests hidatos coexistiran amb
+    els generats dinàmicament.
+
+Mètodes afegits a CtrlPerfil:
+  crearPerfil()      ara retorna boolean (èxit/fracàs)
+  editarDadesPersonals() ara retorna boolean
+  editarPassword()   ara retorna boolean
+
+Mètodes afegits a Partida (per VistaJoc):
+  getTaulell()              → Taulell
+    Retorna el taulell actual (estat visible pel jugador).
+  buidarCasella(int x, int y) → boolean
+    Buida la cel·la (x,y) i afegeix el número de tornada a NumerosDisponibles.
+
+Mètodes afegits a DirectoriHidatos:
+  getTaulells()      → HashMap<Integer, Taulell>
+
+
+6. COMPILACIÓ I EXECUCIÓ
+--------------------------
+
+Des de la carpeta Fonts/:
+
+  Compilar:
+    find src -name "*.java" | xargs javac -encoding UTF-8 \
+      -cp "src;lib/gson-2.10.1.jar" -sourcepath src -d bin
+
+  Executar:
+    java -cp "bin;lib/gson-2.10.1.jar" main
+
+  Amb Makefile:
+    make all
+    make run
+
+Dependències:
+  - gson-2.10.1.jar (a Fonts/lib/) → necessari per CtrlPersistencia.
+  - Java 8 o superior.
+
+El punt d'entrada és main.java, que crida CtrlPresentacio, que llança
+AppFrame amb SwingUtilities.invokeLater() per garantir l'execució al
+thread de la interfície gràfica (Event Dispatch Thread).
+
+
+7. ESTRUCTURA DE FITXERS
+--------------------------
+
+Fonts/src/presentacio/
+  AppFrame.java           → JFrame principal, CardLayout, CtrlDomini
+  VistaInicial.java       → Pantalla 1: benvinguda
+  VistaPerfil.java        → Pantalla 2: crear/carregar perfil
+  VistaMenu.java          → Pantalla 3: menú i estadístiques
+  VistaRepositoris.java   → Pantalla 4: llista d'hidatos
+  VistaHidato.java        → Pantalla 5: validar/comprovar hidato
+  VistaPartidaInicial.java → Pantalla 6: nova partida o carregar
+  VistaConfigPartida.java → Pantalla 7: configuració de partida
+  VistaJoc.java           → Pantalla 8: joc jugable (implementat)

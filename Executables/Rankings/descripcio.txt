@@ -1,0 +1,22 @@
+OBJECTE DE LA PROVA
+Test unitari de la classe del model Rankings (implementada com a Singleton). Es comprova la gestio de les tres llistes de podi (Puntuacio Mitjana, Partides Completades i Millor Puntuacio) i el manteniment del Top 10 global.
+
+ALTRES ELEMENTS INTEGRATS
+Classes Perfil, Estadistiques i EntradaRanking. S'integren per simular l'actualitzacio de dades des del model i verificar com Rankings processa aquests objectes per actualitzar les seves llistes internes.
+
+FITXERS DE DADES NECESSARIS
+Cap.
+
+VALORS ESTUDIATS
+- Patro Singleton: Verificacio que el metode getInstanciaRankings retorna sempre la mateixa referencia de memoria.
+- Ordenacio i Insercio: Proves amb puntuacions variades per validar que el millor usuari sempre ocupa la posicio 0.
+- Limit de Capacitat: Casos on s'intenten introduir 11 usuaris diferents per comprovar que la llista es retalla exactament a 10 elements amb els correctes.
+- Actualitzacio Dinamica: Cas on un usuari ja existent al ranking de Puntuacio Mitjana empitjora el seu valor i ha de descendir posicions automàticament.
+- Redundancia d'ID: Verificacio que el ranking de Millor Puntuacio accepta múltiples entrades d'un mateix usuari, a diferencia dels altres rankings.
+
+EFECTES ESTUDIATS
+- Manteniment de l'ordre descendent en totes les llistes despres de cada actualitzacio.
+- Desplaçament correcte d'usuaris quan un nou "Top User" entra al rànquing.
+- Eliminacio automatica de l'element numero 11 per mantenir la restriccio de disseny del Top 10.
+
+! NOTA: Ates que la classe Rankings es un Singleton, el test inclou un metode reset() per netejar les llistes abans de cada cas de prova. Les validacions de valors de puntuacio es consideren responsabilitat dels controladors superiors; Rankings assumeix que les dades rebudes de Estadistiques son numericament coherents. !

@@ -1,0 +1,31 @@
+OBJECTE DE LA PROVA
+Test de la classe del model Cella.
+
+FUNCIONALITAT PROVADA
+Es proven la creació de cel·les, la validació dels seus paràmetres, la consulta del seu estat i les operacions bàsiques d’edició i còpia.
+
+ALTRES ELEMENTS INTEGRATS
+Cap element extern obligatori. La classe es prova de forma aïllada.
+
+FITXERS DE DADES NECESSARIS
+Cap.
+
+VALORS ESTUDIATS
+- Casos convencionals: creació de cel·les buides, inicials i forats.
+- Casos límit: posicions negatives, valors invàlids i intents d’editar cel·les no editables.
+- Validació de còpia: comprovació que la còpia manté el contingut però és una instància diferent.
+
+EFECTES ESTUDIATS
+- Correcta inicialització dels atributs interns.
+- Funcionament dels mètodes de consulta: esBuida, esForat, teValor, esInicial i esEditable.
+- Funcionament dels mètodes posarNumero, buidar, toTokenFormat i copia.
+- Llançament correcte d’excepcions quan l’ús és invàlid.
+
+PROVA
+    "JUnit version 4.13.2
+....................
+Time: 0,011
+
+OK (20 tests)"
+
+NOTA: Amb la implementació actual, una cel·la només és editable si no és inicial, no és forat i està buida.

@@ -1,0 +1,20 @@
+{
+  "rPuntuacioMitjana": [
+    {
+      "id": "art",
+      "puntuacio": 195.0
+    }
+  ],
+  "rPartidesCompletades": [
+    {
+      "id": "art",
+      "puntuacio": 1.0
+    }
+  ],
+  "rMillorPuntuacio": [
+    {
+      "id": "art",
+      "puntuacio": 195.0
+    }
+  ]
+}

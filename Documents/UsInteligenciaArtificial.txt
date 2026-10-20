@@ -1,0 +1,1045 @@
+Projecte PROP - Hidato
+Grup 41.4
+Camps, Nil / Lopez, Carlos / Rodriguez, Imanol  / Arnau Rodriguez Trocho / Rossell, Jaume
+Versio 1.0 (format: lliurament.revisio)
+
+Nil Camps:
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+Prompt:
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+    Vull que actuïs com un tutor expert en Doxygen i documentació tècnica en Java.
+
+    No vull que em facis la solució final directament ni que em generis tot el Doxyfile complet d’una sola vegada. Vull que m’ensenyis a fer-lo jo mateix, pas a pas, explicant el perquè de cada decisió.
+
+    Objectiu:
+    Ajudar-me a configurar un Doxyfile i a redactar comentaris Doxygen perquè la documentació del meu codi quedi clara, formal i coherent.
+    Instruccions de comportament:
+
+    1. No em donis la resposta final completa d’entrada.
+    2. Explica’m primer quines seccions importants té un Doxyfile i per a què serveix cadascuna.
+    3. Per cada configuració important, indica: quin nom té l’opció, què controla, quins valors habituals pot tenir,quina em recomanes per un projecte Java acadèmic i per què.
+    4. Si proposes una opció concreta del Doxyfile, justifica-la.
+    5. Vull aprendre, així que guia’m com si fos una plantilla comentada o una construcció progressiva.
+    6. Quan parlis dels comentaris del codi, explica’m com documentar:classes,atributs,constructors, mètodes públics,mètodes privats si cal,enums, paràmetres,valors de retorn,excepcions.
+    7. Dona’m criteris d’estil perquè la documentació sigui formal i consistent
+    8. No em copiïs directament comentaris finals llestos per enganxar.
+    9. Si em mostres exemples, que siguin breus i pedagògics, i després explica per què estan ben fets.
+    10. Si detectes errors habituals de documentació o d’estructura, avisa’m.
+
+    Format de resposta que vull:
+
+    Primer, una visió general del que hauria de tenir un bon Doxyfile per al meu cas.
+    Després, una explicació per blocs.
+    Després, una guia d’estil per escriure comentaris Doxygen en Java.
+    Finalment, una petita checklist perquè jo pugui revisar si ho he fet bé.
+
+    Context del meu projecte:
+
+    És un projecte en Java.Del joc Hidato, una versió molt inicial del projecte ja que aquest s'entrega en diferentes dates conforme avança.
+
+
+    Important:
+    Si et demano ajuda sobre una part concreta del Doxyfile o sobre un comentari, no m’ho resolguis tot de cop: primer explica el criteri, després proposa una versió millorada i indica què s’ha millorat.
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+Resposta:
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+    Perfecte. Ho farem com un tutor: criteri primer, decisions després, i la “solució” només anirà sortint a mesura que tu la construeixis.
+
+## Visió general: què hauria de tenir un bon Doxyfile per al teu cas
+
+Per a un projecte **Java acadèmic** com el del **joc Hidato**, un bon `Doxyfile` no ha de ser immens. El més important és que controli bé aquests blocs:
+
+1. **Identitat del projecte**
+   Perquè la documentació tingui nom, context i una sortida ordenada.
+
+2. **Entrada del codi**
+   Per dir-li a Doxygen **què ha de llegir** i **què ha d’ignorar**.
+
+3. **Com interpreta Java i els comentaris**
+   Aquí és on decideixes si vols comportament tipus Javadoc i com es veuran paquets, classes i membres en un projecte Java. `OPTIMIZE_OUTPUT_JAVA` adapta la sortida a Java, i `JAVADOC_AUTOBRIEF` fa que la primera frase d’un comentari Javadoc-style es tracti com a resum breu. ([Doxygen][1])
+
+4. **Què documenta i què no**
+   Per decidir si inclous només API pública o també elements `private`, `package`, interns, etc. `EXTRACT_PRIVATE` i `EXTRACT_PACKAGE` controlen això. ([Doxygen][1])
+
+5. **Sortida generada**
+   En un projecte acadèmic, normalment té molt sentit **HTML sí, la resta no**. Doxygen pot generar molts formats, però no cal activar-ne més dels necessaris. ([Doxygen][1])
+
+6. **Presentació i navegació**
+   Índexs, arbres, visibilitat de detalls, separació per membres, etc.
+
+7. **Gràfics i diagrames**
+   Útils si el projecte comença a créixer, però al principi convé ser prudent per no generar soroll.
+
+La idea bona per al teu cas és aquesta: **fer un Doxyfile curt, justificat i mantenible**, pensat per documentar bé l’evolució del projecte en diferents entregues.
+
+---
+
+## Explicació per blocs
+
+### 1) Bloc d’identitat del projecte
+
+Aquest bloc respon a: **què és aquest projecte i com es dirà la documentació**.
+
+Opcions típiques:
+
+* `PROJECT_NAME`
+* `PROJECT_NUMBER`
+* `PROJECT_BRIEF`
+* `OUTPUT_DIRECTORY`
+
+#### `PROJECT_NAME`
+
+**Què controla:** el nom visible del projecte a la documentació. ([Doxygen][1])
+
+**Valors habituals:** qualsevol text entre cometes.
+
+**Per a tu recomano:** un nom clar i acadèmic, no informal.
+Exemple de criteri: incloure “Hidato” i, si cal, el nom de la pràctica o lliurament.
+
+**Per què:** perquè després tindràs diverses versions/entregues i et convé identificar-les bé.
+
+#### `PROJECT_NUMBER`
+
+**Què controla:** la versió o iteració del projecte. ([Doxygen][1])
+
+**Valors habituals:** `1.0`, `Entrega 1`, `Fase inicial`, etc.
+
+**Recomanació:** fer-lo servir si el projecte s’entrega per fases.
+**Per què:** et permet reflectir que la documentació correspon a una etapa concreta del desenvolupament.
+
+#### `PROJECT_BRIEF`
+
+**Què controla:** una descripció curta del projecte. ([Doxygen][1])
+
+**Recomanació:** una frase objectiva, no promocional.
+**Per què:** ajuda molt a situar el lector al principi.
+
+#### `OUTPUT_DIRECTORY`
+
+**Què controla:** on es generen els fitxers de documentació. ([Doxygen][1])
+
+**Valors habituals:** una carpeta com `docs` o `doxygen`.
+
+**Recomanació:** una carpeta específica separada del codi font.
+**Per què:** evita barrejar codi i documentació generada.
+
+**Criteri general del bloc:** aquí no hi ha gaire “tècnica”; el que importa és ser ordenat i coherent amb les entregues.
+
+---
+
+### 2) Bloc d’entrada: què ha de llegir Doxygen
+
+Aquest bloc és clau. Molts problemes venen d’aquí.
+
+Opcions importants:
+
+* `INPUT`
+* `FILE_PATTERNS`
+* `RECURSIVE`
+* `EXCLUDE`
+* `EXCLUDE_PATTERNS`
+
+#### `INPUT`
+
+**Què controla:** quines carpetes o fitxers analitza Doxygen. ([Doxygen][1])
+
+**Valors habituals:** una o més rutes.
+
+**Recomanació per a Java acadèmic:** apuntar només a la carpeta real del codi font, no a tot el repositori.
+**Per què:** així evites documentar fitxers auxiliars, proves temporals, sortides compilades o carpetes alienes al nucli del projecte.
+
+#### `FILE_PATTERNS`
+
+**Què controla:** quins tipus de fitxer es consideren. Doxygen admet assignacions per extensió i llenguatge. ([Doxygen][1])
+
+**Valors habituals:** per al teu cas, essencialment `*.java`.
+
+**Recomanació:** limitar-ho als fitxers Java.
+**Per què:** en un projecte inicial, és millor ser estricte que massa ampli.
+
+#### `RECURSIVE`
+
+**Què controla:** si entra dins subcarpetes. ([Doxygen][1])
+
+**Valors habituals:** `YES` o `NO`.
+
+**Recomanació:** `YES`, si tens el projecte organitzat per paquets i subpaquets.
+**Per què:** en Java és molt habitual que l’estructura de paquets coincideixi amb carpetes.
+
+#### `EXCLUDE` i `EXCLUDE_PATTERNS`
+
+**Què controlen:** què no s’ha de processar. ([Doxygen][1])
+
+**Recomanació:** excloure sortides de compilació, documentació generada, tests si no formen part de l’objectiu docent, i qualsevol carpeta automàtica.
+**Per què:** una documentació acadèmica clara guanya molt si només mostra el nucli rellevant.
+
+**Error habitual:** posar `INPUT` massa ampli i després haver de “netejar” amb exclusions.
+**Millor criteri:** primer restringeix bé `INPUT`, i només després exclou el que sobri.
+
+---
+
+### 3) Bloc de llenguatge i interpretació dels comentaris
+
+Aquest és especialment important per a tu.
+
+Opcions importants:
+
+* `OPTIMIZE_OUTPUT_JAVA`
+* `JAVADOC_AUTOBRIEF`
+* `JAVADOC_BANNER`
+
+#### `OPTIMIZE_OUTPUT_JAVA`
+
+**Què controla:** fa que Doxygen presenti la documentació d’una manera més pròpia de Java; per exemple, tracta els espais de noms com a paquets i adapta la presentació. ([Doxygen][1])
+
+**Valors habituals:** `YES` o `NO`.
+
+**Recomanació:** `YES`.
+**Per què:** el teu projecte és Java pur, així que aquesta opció millora l’encaix entre la documentació i el llenguatge real.
+
+#### `JAVADOC_AUTOBRIEF`
+
+**Què controla:** si és `YES`, la primera frase d’un comentari estil Javadoc es considera la descripció breu; si és `NO`, cal indicar-la explícitament amb `@brief` o equivalent. ([Doxygen][1])
+
+**Valors habituals:** `YES` o `NO`.
+
+**Per a un projecte acadèmic jo et recomano:** **normalment `YES`**, però amb disciplina d’escriptura.
+
+**Per què:**
+
+* et força a escriure una **primera frase molt bona**, clara i formal;
+* simplifica la documentació;
+* encaixa bé amb hàbits de Java.
+
+**Quan no el recomanaria:** si l’equip escriu comentaris molt irregulars i la primera frase sol ser confusa o massa llarga.
+
+#### `JAVADOC_BANNER`
+
+**Què controla:** si Doxygen interpreta certs comentaris “banner” com a comentaris Javadoc-style. ([Doxygen][1])
+
+**Recomanació:** no és prioritari en un projecte acadèmic inicial.
+**Per què:** millor centrar-se en comentaris normals ben fets que en variants decoratives.
+
+**Error habitual:** pensar que “més sintaxi” = “millor documentació”.
+No. Primer claredat, després floritures.
+
+---
+
+### 4) Bloc de visibilitat: què s’ha de documentar
+
+Aquest bloc decideix si la documentació és només d’ús extern o també d’implementació.
+
+Opcions importants:
+
+* `EXTRACT_ALL`
+* `EXTRACT_PRIVATE`
+* `EXTRACT_PACKAGE`
+* `EXTRACT_STATIC`
+* `INTERNAL_DOCS`
+
+#### `EXTRACT_ALL`
+
+**Què controla:** si Doxygen extreu tot, fins i tot el que no està documentat explícitament. ([Doxygen][1])
+
+**Recomanació:** per aprendre a documentar bé, **millor no recolzar-s’hi massa**.
+**Per què:** si ho actives alegrement, pots generar una documentació plena d’elements sense explicació útil.
+
+#### `EXTRACT_PRIVATE`
+
+**Què controla:** inclou membres `private`. El valor per defecte és `NO`. ([Doxygen][1])
+
+**Valors habituals:** `YES` o `NO`.
+
+**Recomanació per al teu cas:**
+
+* **fase acadèmica inicial**: sovint `NO`, si vols una documentació més neta i centrada en la interfície pública;
+* **si el professor valora disseny intern**: pot tenir sentit `YES`, però només si també documentes aquests elements amb criteri.
+
+**Per què:** documentar privats perquè sí sovint infla la documentació i l’embruta.
+
+#### `EXTRACT_PACKAGE`
+
+**Què controla:** inclou membres amb visibilitat de paquet. El valor per defecte és `NO`. ([Doxygen][1])
+
+**Recomanació:** similar a `EXTRACT_PRIVATE`; en una entrega inicial, només si de debò tenen interès arquitectònic.
+
+#### `EXTRACT_STATIC`
+
+**Què controla:** inclou membres estàtics de fitxer; és més rellevant en altres llenguatges, però existeix com a opció general. ([Doxygen][1])
+
+**Recomanació:** no és de les primeres que jo tocaria en el teu cas.
+
+#### `INTERNAL_DOCS`
+
+**Què controla:** si inclou documentació marcada com a interna amb `\internal`. El valor per defecte és `NO`. ([Doxygen][1])
+
+**Recomanació:** `NO` per a una entrega acadèmica estàndard.
+**Per què:** la documentació principal hauria de ser presentable i coherent, no barrejada amb notes d’implementació internes.
+
+**Criteri tutor:**
+Per al teu projecte, jo començaria documentant **molt bé classes, constructors i mètodes públics**, i només després decidiria si la part privada mereix aparèixer.
+
+---
+
+### 5) Bloc de sortida
+
+Opcions importants:
+
+* `GENERATE_HTML`
+* altres formats (`GENERATE_LATEX`, `GENERATE_RTF`, `GENERATE_MAN`, etc.)
+
+Doxygen pot generar molts formats; per exemple, pàgines man si `GENERATE_MAN=YES`. ([Doxygen][1])
+
+#### `GENERATE_HTML`
+
+**Què controla:** si genera documentació navegable en HTML. ([Doxygen][1])
+
+**Recomanació:** `YES`.
+**Per què:** és el format més pràctic per revisar i entregar.
+
+#### Altres formats
+
+**Recomanació:** en principi `NO`.
+**Per què:** en un projecte Java acadèmic, normalment no necessites LaTeX, RTF o man pages. Menys soroll, més focus.
+
+**Error habitual:** activar sortides “per si de cas”.
+No cal. Cada format extra complica i rarament aporta res en una pràctica inicial.
+
+---
+
+### 6) Bloc de presentació i llegibilitat
+
+Opcions útils:
+
+* `BRIEF_MEMBER_DESC`
+* `ALPHABETICAL_INDEX`
+* `SEPARATE_MEMBER_PAGES`
+* `TAB_SIZE`
+
+#### `SEPARATE_MEMBER_PAGES`
+
+**Què controla:** si cada membre té pàgina pròpia; el valor per defecte és `NO`. ([Doxygen][1])
+
+**Recomanació:** `NO` en el teu cas.
+**Per què:** per a un projecte inicial, separar cada membre acostuma a fragmentar massa la lectura.
+
+#### `TAB_SIZE`
+
+**Què controla:** com es converteixen tabuladors en fragments de codi; el valor per defecte és `4`. ([Doxygen][1])
+
+**Recomanació:** mantenir un valor coherent amb la teva indentació habitual.
+**Per què:** no canvia el disseny del projecte, però sí la llegibilitat del codi mostrat.
+
+Aquí la idea és senzilla: que la documentació **sigui fàcil de navegar i no exageradament fragmentada**.
+
+---
+
+### 7) Bloc de diagrames
+
+No és el primer bloc que tocaria, però existeix.
+
+**Recomanació inicial:** moderació.
+**Per què:** en una primera versió del projecte, si encara esteu construint arquitectura, massa diagrama pot confondre més que ajudar.
+
+Quan el projecte del Hidato creixi i ja tinguis jerarquies o dependències més estables, llavors sí que val la pena revisar aquest bloc amb més detall.
+
+---
+
+## Guia d’estil per escriure comentaris Doxygen en Java
+
+Ara anem a la part realment important: **què documentar** i **com escriure-ho bé**.
+
+Doxygen admet ordres com `@param` per documentar paràmetres, i també `@return` i `@throw`/`@exception` per descriure retorns i excepcions. En el cas de `@param`, fins i tot es poden indicar direccions com `[in]`, `[out]` o `[in,out]`, encara que en Java això no sol ser tan central com en C/C++. ([Doxygen][2])
+
+### A) Classes
+
+Una classe s’hauria de documentar sempre si és part de l’arquitectura del projecte.
+
+**Ha d’explicar:**
+
+* responsabilitat principal;
+* paper dins del sistema;
+* relacions importants si són necessàries per entendre-la;
+* restriccions o invariants si n’hi ha.
+
+**Exemple breu pedagògic:**
+
+```java
+/**
+ * Representa el tauler d'una partida de Hidato.
+ * Gestiona l'estat de les caselles i la validació bàsica de moviments.
+ */
+```
+
+**Per què està bé:**
+
+* primera frase = definició clara;
+* segona frase = responsabilitat;
+* no entra en detalls de baix nivell;
+* no repeteix el nom de la classe sense aportar informació.
+
+**Error habitual:**
+“Classe Tauler.”
+Això no documenta res.
+
+---
+
+### B) Atributs
+
+Documenta atributs quan:
+
+* no són obvis pel nom;
+* representen estat rellevant;
+* tenen restriccions;
+* afecten el comportament del sistema.
+
+**Criteri:** no descriguis l’atribut com si llegissis el tipus; explica la seva funció.
+
+**Mal enfocament:** “Enter amb el número de files.”
+**Millor criteri:** “Nombre de files del tauler; es manté constant després de la inicialització.”
+
+---
+
+### C) Constructors
+
+Un constructor s’ha de documentar si:
+
+* inicialitza estat rellevant;
+* imposa precondicions;
+* pot llançar excepcions;
+* hi ha diverses maneres de construir l’objecte.
+
+**Ha d’explicar:**
+
+* què deixa preparat;
+* quins paràmetres espera;
+* què passa si la creació falla.
+
+**Error habitual:** repetir la descripció de la classe.
+
+---
+
+### D) Mètodes públics
+
+Aquests són prioritat màxima.
+
+Per a cada mètode públic, intenta cobrir:
+
+* què fa;
+* sobre quin estat actua;
+* què retorna, si escau;
+* paràmetres;
+* excepcions;
+* restriccions o precondicions.
+
+**Exemple breu pedagògic:**
+
+```java
+/**
+ * Comprova si una posició del tauler és vàlida.
+ * @param fila fila que es vol consultar
+ * @param columna columna que es vol consultar
+ * @return cert si la posició pertany als límits del tauler
+ */
+```
+
+**Per què està bé:**
+
+* comença amb verb d’acció;
+* els paràmetres no repeteixen només el nom;
+* el retorn descriu el significat, no només diu “true o false”.
+
+**Error habitual:**
+`@return true si està bé.`
+Això és massa vague.
+
+---
+
+### E) Mètodes privats
+
+No sempre cal documentar-los tots.
+
+**Documenta’ls quan:**
+
+* encapsulen lògica no trivial;
+* tenen un nom que no basta per entendre el perquè;
+* formen part d’un algorisme rellevant;
+* són fàcils d’interpretar malament.
+
+**No cal obsessionar-s’hi** si són auxiliars molt simples i el professorat no us ho exigeix.
+
+**Criteri docent útil:** un mètode privat mereix comentari si ajuda a entendre el disseny, no si només afegeix soroll.
+
+---
+
+### F) Enums
+
+Un `enum` s’ha de documentar com a tipus i, si cal, també pels seus valors. Doxygen permet documentar valors d’enumeració, però l’`enum` mateix s’ha de documentar com a entitat pròpia; no s’ha de confondre amb documentar només els elements interns. ([Doxygen][2])
+
+**Has d’explicar:**
+
+* què representa l’enumeració;
+* en quin context s’utilitza;
+* què significa cada valor si no és evident.
+
+**Error habitual:** deixar només noms com `EASY`, `MEDIUM`, `HARD` i suposar que ja s’entén tot.
+
+---
+
+### G) Paràmetres
+
+Amb `@param`, la regla bona és:
+
+**No** descriure només “què és”,
+sinó **quin paper juga** dins del mètode. ([Doxygen][2])
+
+Exemple de bon criteri:
+
+* dolent: “`fila`: número de fila”
+* millor: “índex de la fila que es vol validar dins del tauler”
+
+---
+
+### H) Valors de retorn
+
+Amb `@return`, descriu:
+
+* el significat del valor retornat;
+* si hi ha casos especials;
+* què indica cada resultat, sobretot si és booleà o nullable. ([Doxygen][2])
+
+**Error habitual:**
+`@return resultat de l’operació.`
+No diu res.
+
+---
+
+### I) Excepcions
+
+Si un mètode pot fallar d’una manera rellevant, documenta-ho amb `@throw` o `@exception`. Doxygen ho contempla explícitament dins dels blocs de documentació. ([Doxygen][2])
+
+**Has d’explicar:**
+
+* en quina condició es llança;
+* si és responsabilitat del client evitar-la.
+
+Exemple de criteri:
+
+* no diguis només “si hi ha error”;
+* digues “quan el fitxer de partida no segueix el format esperat”, o “quan les dimensions del tauler són invàlides”.
+
+---
+
+## Criteris d’estil perquè la documentació sigui formal i consistent
+
+Això és el que més eleva la qualitat.
+
+### 1) La primera frase ha de ser impecable
+
+Si acabes fent servir `JAVADOC_AUTOBRIEF = YES`, la primera frase es convertirà en el resum breu. Doxygen la tracta així quan aquesta opció és activa. ([Doxygen][1])
+
+Per tant, la primera frase ha de ser:
+
+* curta;
+* completa;
+* informativa;
+* amb punt final;
+* sense informalitats.
+
+### 2) Comença classes i mètodes amb verbs o definicions clares
+
+* Classe: “Representa…”, “Modela…”, “Gestiona…”
+* Mètode: “Calcula…”, “Valida…”, “Actualitza…”, “Comprova…”
+
+Això dona uniformitat.
+
+### 3) No repeteixis el nom de l’element
+
+Exemple dolent:
+
+* “Mètode `resoldre()` que resol.”
+* “Classe `Tauler` del tauler.”
+
+Això no aporta informació nova.
+
+### 4) Explica intenció, no només mecànica
+
+No et quedis en “fa un `if` i recorre una llista”.
+El lector vol entendre **per què existeix** aquell element.
+
+### 5) Mantén el mateix registre lingüístic
+
+Si tries català formal, mantén-lo sempre:
+
+* mateix tractament verbal;
+* mateix nivell de detall;
+* mateix criteri terminològic.
+
+No barregis, per exemple:
+
+* “retorna true”
+* “comprova si…”
+* “agafa la posició”
+* “fa coses”
+
+Això queda desigual.
+
+### 6) Evita comentaris redundants
+
+Si el nom ja és clar, no el parafrasegis.
+Documenta només allò que afegeix context, contracte, restriccions o significat.
+
+### 7) Documenta el contracte
+
+Sobretot en mètodes públics:
+
+* què espera;
+* què garanteix;
+* quan pot fallar.
+
+### 8) Sigues coherent amb el nivell de detall
+
+No facis una classe amb 8 línies de documentació i una altra igual d’important amb només mitja línia.
+La coherència dona sensació de sistema ben pensat.
+
+---
+
+## Errors habituals que et convé evitar
+
+1. **Comentaris que només reescriuen el nom del mètode**
+   No afegeixen cap valor.
+
+2. **Barrejar implementació i contracte**
+   La documentació pública ha d’explicar què fa i quan, no tots els detalls interns.
+
+3. **No documentar excepcions rellevants**
+   Especialment en constructors i mètodes de validació o càrrega.
+
+4. **Fer descripcions massa vagues**
+   Paraules com “gestiona”, “fa”, “tracta”, “processa” poden ser útils, però només si després concretes una mica.
+
+5. **Ser inconsistent amb els booleans**
+   En `@return`, cal dir què significa `true` o `false`.
+
+6. **Documentar privats innecessaris però deixar públics pobres**
+   Primer la interfície pública, després la resta.
+
+7. **Posar Doxygen a documentar massa coses**
+   Un Doxyfile massa obert produeix una documentació pitjor, no millor.
+
+---
+
+## Checklist curta per revisar si ho has fet bé
+
+Abans de donar per bo el teu treball, revisa això:
+
+* El `Doxyfile` identifica clarament el projecte i la seva fase.
+* `INPUT` apunta només al codi que realment vols documentar.
+* La configuració està adaptada a Java, especialment amb `OPTIMIZE_OUTPUT_JAVA`. ([Doxygen][1])
+* Has decidit conscientment si vols o no incloure `private` i membres de paquet amb `EXTRACT_PRIVATE` i `EXTRACT_PACKAGE`. ([Doxygen][1])
+* La sortida principal és HTML i no has activat formats innecessaris. ([Doxygen][1])
+* Cada classe té una descripció clara de la seva responsabilitat.
+* Cada constructor i mètode públic documenta bé paràmetres, retorn i excepcions quan toca. ([Doxygen][2])
+* Els `enum` i els seus valors tenen significat explícit quan no és obvi. ([Doxygen][2])
+* La primera frase dels comentaris és bona per funcionar com a resum breu si actives `JAVADOC_AUTOBRIEF`. ([Doxygen][1])
+* El to és formal, consistent i sense comentaris redundants.
+
+El següent pas més útil és construir **només el primer bloc real del teu Doxyfile**: identitat del projecte + entrada (`PROJECT_*`, `OUTPUT_DIRECTORY`, `INPUT`, `RECURSIVE`, `FILE_PATTERNS`). Si vols, en el següent missatge ho fem així: jo t’explico **cada opció una per una**, et dic **què triaria per al teu Hidato**, i tu la vas escrivint amb criteri.
+
+[1]: https://www.doxygen.nl/manual/config.html?utm_source=chatgpt.com "Configuration - Doxygen"
+[2]: https://www.doxygen.nl/manual/docblocks.html?utm_source=chatgpt.com "Doxygen: Documenting the code"
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+Prompt: Imaginat que ets un alumne de 3r  d'enginyeria Informatica de la UPC de barcelona, he de fer el UML de la capa de presentació amb draw.io  a partir dels arxius que t'he passat, tens una foto amb el uml començat, es important posar Com es relacionen les vistes entre si i la classe, posar atributs i funcions,
+ i si es relacionen amb un controlador anotar-ho a no ser que estigui com a atribut. Passam els atributs i funcions que fa servir cada vista per tal de facilitar-me el fer UML.
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+Resposta: Aquí tens la descripció detallada per dibuixar-lo tu mateix:
+
+---
+
+## Disposició general
+
+El diagrama té **dues zones principals**:
+- A la **dreta i al centre-superior**: `AppFrame` (el contenidor)
+- Al **voltant**: les 8 vistes, distribuïdes seguint el flux de navegació d'esquerra a dreta i de dalt a baix
+
+---
+
+## Classes i el seu contingut exacte
+
+### AppFrame *(JFrame)* — color blau clar
+**Atributs:**
+```
+- ctrlDomini : CtrlDomini
+- mainPanel : JPanel
+- cardLayout : CardLayout
+- usuariActual : Perfil
+```
+**Mètodes:**
+```
++ AppFrame()
++ mostrarPantalla(nom: String) : void
++ afegirPantalla(pantalla: JPanel, nom: String) : void
++ getCtrlDomini() : CtrlDomini
++ getUsuariActual() : Perfil
++ setUsuariActual(p: Perfil) : void
+```
+
+---
+
+### VistaInicial *(JPanel)* — color verd clar
+**Atributs:**
+```
+- BG_TOP, BG_BOT, TITOL, SUBTITOL : Color
+- GRUP, LINIA, BTN_NOR, BTN_HOV : Color
+```
+**Mètodes:**
+```
++ VistaInicial(frame: AppFrame)
++ «static» crearBoto(text, normal, hover) : JButton
+- crearLinia() : JPanel
+# paintComponent(g: Graphics) : void
+```
+
+---
+
+### VistaPerfil *(JPanel)* — color verd clar
+**Atributs:**
+```
+- BG_TOP, BG_BOT, CARD_BG, CARD_HOV : Color
+- FIELD_BG, FIELD_BORDER, ERR_COLOR, DIALOG_BG : Color
+```
+**Mètodes:**
+```
++ VistaPerfil(frame: AppFrame)
+- crearTargeta(simbol, titol, desc, onClick) : JPanel
+- mostrarDialegCrear(frame: AppFrame) : void
+- mostrarDialegCarregar(frame: AppFrame) : void
+- anarAMenu(frame: AppFrame) : void
+- crearCamp() : JTextField
+- crearCampPassword() : JPasswordField
+# paintComponent(g: Graphics) : void
+```
+**Nota al costat** (sense fletxa, text italic):
+> *usa: CtrlDomini.crearPerfil(), cargarPerfil()*
+
+---
+
+### VistaMenu *(JPanel)* — color verd clar
+**Atributs:**
+```
+- lblNomVal : JLabel
+- lblJugatsVal : JLabel
+- lblCompletatsVal : JLabel
+- lblMitjanaVal : JLabel
+- lblMillorVal : JLabel
+```
+**Mètodes:**
+```
++ VistaMenu(frame: AppFrame)
+- crearPanellEsquerre(frame: AppFrame) : JPanel
+- crearPanellDret(frame: AppFrame) : JPanel
++ actualitzarEstadistiques(frame: AppFrame) : void
+- mostrarDialegEditarPerfil(frame: AppFrame) : void
+# paintComponent(g: Graphics) : void
+```
+**Nota al costat:**
+> *usa: CtrlDomini.editarNom(), editarPassword()*
+> *usa: Perfil.getEstadistiques()*
+
+---
+
+### VistaPartidaInicial *(JPanel)* — color verd clar
+**Atributs:**
+```
+- BG_TOP, BG_BOT, CARD_BG, CARD_HOV : Color
+- ERR_COLOR, DIALOG_BG, RES_BG : Color
+```
+**Mètodes:**
+```
++ VistaPartidaInicial(frame: AppFrame)
+- crearCapcalera() : JPanel
+- crearCos(frame: AppFrame) : JPanel
+- crearTargeta(simbol, titol, desc, onClick) : JPanel
+- mostrarPopupCarregar(frame: AppFrame) : void
+- crearPeu(frame: AppFrame) : JPanel
+# paintComponent(g: Graphics) : void
+```
+**Nota al costat:**
+> *usa: CtrlDomini.getPartidesGuardades()*
+
+---
+
+### VistaConfigPartida *(JPanel)* — color verd clar
+**Atributs:**
+```
+- MIN_FACIL : int = 9
+- MIN_MITJA : int = 16
+- MIN_DIFICIL : int = 25
+- Colors: TOGGLE_OFF, TOGGLE_ON, ERR_COLOR, INFO_COLOR...
+```
+**Mètodes:**
+```
++ VistaConfigPartida(frame: AppFrame)
+- crearCapcalera() : JPanel
+- crearCos(frame: AppFrame) : JPanel
+- crearGrupToggle(etiquetes[], grup) : JToggleButton[]
+- actualitzarInfoDificultat(lbl, dif: int) : void
+- getMinim(dif: int) : int
+# paintComponent(g: Graphics) : void
+```
+**Nota al costat:**
+> *usa: CtrlDomini.getHidatos()*
+
+---
+
+### VistaJoc *(JPanel)* — color verd clar
+**Atributs:**
+```
+- frame : AppFrame
+- mode : TPartida
+- codiHidato : int
+- partida : Partida
+- taulell : Taulell
+- cellaSeleccionada : int[]
+- digitBuffer : String
+- cellBtns : JButton[][]
+- lblTimer : JLabel
+- lblInfo : JLabel
+- swingTimer : Timer
+- undoStack : Deque<int[]>
+- partidaAcabada : boolean
+```
+**Mètodes:**
+```
++ VistaJoc(frame, mode, difIdx, tempsMins)
++ VistaJoc(frame, mode, difIdx, tempsMins, forma)
++ VistaJoc(frame, mode, difIdx, tempsMins, forma, codiHidato)
+- initPartida(mode, difIdx, tempsMins, forma) : boolean
+- crearTop(tempsMins: int) : JPanel
+- crearCentre() : JPanel
+- crearBottom() : JPanel
+- crearCellButton(i: int, j: int) : JButton
+- configurarTecles() : void
+- startTimer(mode, tempsMins) : void
+- acabarPartida(extra: String) : void
+- mostrarDialogFi(punts: float, extra: String) : void
+- mostrarPausa() : void
+# paintComponent(g: Graphics) : void
+```
+**Nota al costat:**
+> *usa: CtrlDomini.getHidatos(), getHidatoSolucio()*
+> *usa: CtrlDomini.partidaFinalitzada()*
+
+---
+
+### VistaHidato *(JPanel)* — color verd clar
+**Atributs:**
+```
+- Colors: BG_TOP, BG_BOT, ERR_COLOR, OK_COLOR, WARN_COLOR...
+```
+**Mètodes:**
+```
++ VistaHidato(frame: AppFrame)
+- crearCapcalera() : JPanel
+- crearCos(frame: AppFrame) : JPanel
+- crearTargeta(simbol, titol, desc, onClick) : JPanel
+- mostrarPopupValidar(frame: AppFrame) : void
+- mostrarPopupComprovar(frame: AppFrame) : void
+- poblarCodiCombo(camp, frame) : void
+- crearPanelResultat() : JPanel
+- crearPeu(frame: AppFrame) : JPanel
+# paintComponent(g: Graphics) : void
+```
+**Nota al costat:**
+> *usa: CtrlDomini.validarHidato(codi)*
+> *usa: CtrlDomini.comprovarHidato(codi)*
+
+---
+
+### VistaRepositoris *(JPanel)* — color verd clar
+**Atributs:**
+```
+- Colors: TAULA_HEADER, TAULA_ROW1, TAULA_ROW2 : Color
+- TAULA_SEL, TAULA_BORDER, BUIT_COLOR : Color
+```
+**Mètodes:**
+```
++ VistaRepositoris(frame: AppFrame)
+- crearCapcalera(frame: AppFrame) : JPanel
+- crearCos(frame: AppFrame) : JPanel
+- crearMissatgeBuit() : JPanel
+- crearTaula(hidatos: HashMap<Integer, Taulell>) : JScrollPane
+- estilitzarTaula(taula: JTable) : void
+- crearPeuDePagina(frame: AppFrame) : JPanel
+- formatForma(f: TForma) : String
+- formatAdjacencia(a: TAdjacencia) : String
+# paintComponent(g: Graphics) : void
+```
+**Nota al costat:**
+> *usa: CtrlDomini.getHidatos()*
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+Prompt: Que hauria de tenir en compte a l'hora de millorar una Interficie Gràfica en Java, importants de cara a l'eficiència del codi
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+Resposta: Aquí tens els aspectes clau a tenir en compte per millorar una GUI en Java amb bon rendiment:
+
+## Gestió del Thread d'Event Dispatch (EDT)
+
+Tot el que afecti la UI ha de córrer a l'EDT. Si fas operacions pesades al mateix fil, la interfície es queda bloquejada.
+
+- Usa `SwingUtilities.invokeLater()` per actualitzar components des d'altres fils
+- Per tasques llargues (xarxa, IO, càlculs), usa **SwingWorker** per no bloquejar l'EDT
+- Mai facis `Thread.sleep()` o operacions bloquejants directament a listeners d'events
+
+## Repintat i renderització
+
+- Sobreescriu `paintComponent()` en lloc de `paint()` als components personalitzats
+- Crida sempre `super.paintComponent(g)` primer
+- Usa **double buffering** (activat per defecte a Swing) — no el desactivis
+- Limita les zones que es repinten amb `repaint(x, y, width, height)` en lloc de `repaint()` general quan sigui possible
+- Evita fer càlculs pesats dins de `paintComponent()` — precomputeu el que pugueu
+
+## Gestió de components
+
+- **Reutilitza components** en lloc de crear-ne de nous constantment (especialment en llistes o taules)
+- Per a `JList` i `JTable` amb moltes dades, implementa correctament els **renderers** personalitzats — un sol renderer que es reutilitza és molt millor que un component per fila
+- Usa `setOpaque(false)` amb cura: els components no opacs forcen repintats del pare
+
+## Càrrega diferida i dades
+
+- No carreguis totes les dades a l'inici si no cal — usa **lazy loading**
+- Per a taules grans, implementa paginació o càrrega sota demanda en el `TableModel`
+- Els models (`TableModel`, `ListModel`) han de notificar canvis amb els mètodes adequats (`fireTableRowsInserted`, etc.) per evitar repintats innecessaris
+
+## Layout i jerarquia de components
+
+- Evita jerarquies de contenidors massa profundes — cada nivell afegeix overhead de layout
+- `null` layout (posicionament absolut) sembla més ràpid però és problemàtic i no escala
+- `GroupLayout` o `MigLayout` (extern) solen ser més eficients per layouts complexos que aniuar molts `JPanels`
+
+## Gestió de recursos
+
+- Reutilitza objectes `Font`, `Color` i `Image` — no els creïs nous a cada `paintComponent()`
+- Allibera recursos gràfics: si crees un `Graphics2D` manualment, fes `dispose()` al final
+- Les imatges és millor tenir-les com a `BufferedImage` precarregades, no carregar-les en cada repintat
+
+## Eines per detectar problemes
+
+- **SwingExplorer** o el **EDT check** per detectar accesos incorrectes al EDT
+- Activa la comprovació de violacions EDT en desenvolupament: `RepaintManager` customitzat que llança excepcions fora de l'EDT
+- El **Java Mission Control / JFR** et pot mostrar on es gasta el temps real
+
+---
+
+En resum, el problema més comú és bloquejar l'EDT amb feina pesada. Si la UI va lenta, el primer que has de revisar és si estàs fent IO, xarxa o càlculs llargs al fil principal de Swing.
+
+Tens alguna part concreta de la teva GUI que vulguis optimitzar?
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+Carlos Lopez:
+
+Prompts:
+
+    1. Generam un exemple de compentari amb doxygen a java.
+    2. Analiza aquesta clase que em dona error de compilacio. (paso la clase DirectoriHidatos.java).
+    3. Tenvi aquest test en java perque me diguis en que falla a taulell. ex: 
+    public void testAfegirHidato() {
+      DirectoriHidatos directori = new DirectoriHidatos();
+      Taulell t1 = new Taulell(10);
+      directori.afegirHidato(t1);
+      assertEquals(1, directori.getNumHidatosTotals());
+      assertTrue(directori.existeixHidato(10));
+      assertEquals(t1, directori.getHidato(10));
+      }. (paso tambe la clase taulell).
+
+
+Resposta (Claude):
+
+    1.      /**
+            * @class Calculadora
+            * @brief Classe per realitzar operacions matemàtiques bàsiques.
+            */
+            public class Calculadora {
+
+                /** @brief Valor acumulat de la calculadora. */
+                private int valor;
+
+                /**
+                * @brief Constructor que inicialitza la calculadora a zero.
+                */
+                public Calculadora() {
+                    this.valor = 0;
+                }
+
+                /**
+                * @brief Suma dos enters i retorna el resultat.
+                * @param a Primer operand.
+                * @param b Segon operand.
+                * @return La suma de a i b.
+                */
+                public int sumar(int a, int b) {
+                    return a + b;
+                }
+
+                /**
+                * @brief Divideix dos enters.
+                * @param a Dividend.
+                * @param b Divisor.
+                * @return El resultat de la divisió.
+                * @throws ArithmeticException Si b és zero.
+                */
+                public int dividir(int a, int b) {
+                    if (b == 0) throw new ArithmeticException("Divisió per zero");
+                    return a / b;
+                }
+            }
+    
+    2. Imports incomplets — Taulell no es troba perquè falta 
+    import domini.algorismes.* i els imports de Iterator i 
+    Map per al mètode getTotsHidatosE.
+
+    3. Constructor incorrecte — new Taulell(10) no existeix.
+     El constructor necessita 5 paràmetres: codi, tipus d'adjacència, forma, files i columnes. 
+     Cal substituir totes les instanciacions.
+
+
+Arnau:
+(Claude - Sonnet 4.6)
+// -- Prompt -- //
+Quiero que me ayudes a plantear el sistema de puntuación que necesito para mi proyecto de programación en java del juego Hidato. 
+En mi proyecto se da la opción de jugar a 3 tipos de partidas diferentes: Normal(la forma común de jugar al juego), Contrarreloj(timer configurable que al acabar finaliza la partida si el usuario aun no ha acabado) y Supervivencia (modo infinito donde la partida acaba unicamente cuando el usuario se queda sin vidas).
+Sin importar el tipo de partida se le puede asociar una dificultad (facil, mitja o dificil) que conlleva un nivel de ayuda, esto lo puedes ver en el fichero [Dificultat.java] que tienes disponible.
+Además, ten en cuenta que las partidas de tipo Supervivencia no tiene sentido que usen el tiempo para calcular la puntuación y que las partidas de contrarreloj tambien deberian tener una puntuación aunque terminen por el timer.
+
+// -- Resposta -- //
+Sistema de Puntuación para Hidato
+
+Normal
+La puntuación base escala con el tamaño del tablero (casillas vacías iniciales), de forma que tableros más grandes valen más:
+puntuacion = (caselles_buides * 10 - errores * 5) * multiplicador_dificultad
+
+Cada casilla vacía inicial vale 10 puntos base
+Cada error resta 5 puntos (peso menor que el valor de una casilla para no ser demasiado punitivo)
+El multiplicador de dificultad escala todo
+
+Contrarrellotge
+Misma idea, la base escala con el tablero:
+Completado a tiempo:
+puntuacion = (caselles_buides * 10 - errores * 5 + (temps_restant / temps_total) * caselles_buides * 5) * multiplicador_dificultad
+El bonus por tiempo vale hasta la mitad del valor base del tablero.
+Tiempo agotado:
+puntuacion = (caselles_completades / caselles_buides) * caselles_buides * 5 * multiplicador_dificultad
+
+Supervivencia
+Aquí las casillas varían entre tableros, así que acumular por tablero completado con su propio peso tiene sentido:
+puntuacion += caselles_buides_del_tablero * 10 * multiplicador_dificultad
+Cada tablero completado aporta según su tamaño, y la suma total refleja la progresión del jugador.

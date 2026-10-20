@@ -1,0 +1,7 @@
+Fonts/bin/
+Fonts/HIDATO.jar
+html/
+latex/
+*.class
+.DS_Store
+__MACOSX/

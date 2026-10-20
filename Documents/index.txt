@@ -1,0 +1,8 @@
+Aquest directori conté:
+1. CasosUs.pdf => Fitxer amb la informació respecte totes les funcionalitats definides per l'equip disponibles en el projecte.
+2. UML.pdf => Fitxer amb la informació respecte totes les classes y relacions entre elles del projecte.
+3. classesPerMembre.pdf => Fitxer amb la informació respecte quin membre del grup es responsable per quina classe.
+4. estructures.pdf => Fitxer amb descripció de les estructures de dades i algorismes del projecte.
+5. jocsDeProves.pdf => Fitxer amb descripció i justificació dels joc de proves empleats.
+6. UsInteligenciaArtificial.txt => Fitxer amb els prompts utilitzats i les respostes resultants del ús de la IA en el projecte.
++ Enunciats del problema i normativa de la assignatura

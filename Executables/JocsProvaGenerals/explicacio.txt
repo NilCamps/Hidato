@@ -1,0 +1,4 @@
+Aquests jocs de prova generals que hem dissenyat sobretot miren de probar els casos limit de la funció 2, validar hidato.
+Com encara no tenim un algoritme eficient ens hem centrat en hidatos petits pero amb formes i adjacències diferents per tal
+de probar els limits del disseny de la nostra funció.
+Els hem crear en disseny de caixa blanca però probant hidatos amb estructures extremes per tal que no errès el nostre codi.

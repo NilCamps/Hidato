@@ -1,0 +1,27 @@
+OBJECTE DE LA PROVA
+Test de la classe del model Dificultat.
+
+FUNCIONALITAT PROVADA
+Es proven els casos d'ús de 
+
+FITXERS DE DADES NECESSARIS
+Cap.
+
+VALORS ESTUDIATS
+- Casos convencionals: Inserció de dificultats dels 3 tipus diferents.
+- Casos límit: Intent d'afegir o modificar una dificultat amb parametres incorrectes
+- Validació de l'estat: Seguiment dels valors retornats per la creadora i els getters.
+
+EFECTES ESTUDIATS
+- Creacio correcta de Dificultat.
+- Modificacio correcta dels atributs de la classe en un dels 3 tipus possibles.
+- Comprovació que només es donen els casos permesos i es permet modificar de una dificultat a una altra.
+
+PROVA
+    JUnit version 4.13.2
+.No existeix una dificultat amb aquests parametres, retornant dificultat facil
+..No existeix una dificultat amb aquests parametres, no modifiquem dificultat
+....
+Time: 0,004
+
+OK (7 tests)

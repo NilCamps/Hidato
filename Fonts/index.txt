@@ -1,0 +1,5 @@
+Aquest directori conté:
+1. Directori src => Directori amb totes les classes responsables del funcionament del projecte.
+2. Makefile => Fitxer encarregat de facilitar la compilació i execució del projecte.
+    make (Compila el projecte sencer)
+    clean (Neteja el directori bin dels fitxers generats en la compilació)

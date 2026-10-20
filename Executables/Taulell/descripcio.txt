@@ -1,0 +1,33 @@
+OBJECTE DE LA PROVA
+Test de la classe del model Taulell.
+
+FUNCIONALITAT PROVADA
+Es proven la construcció del taulell, la gestió de les caselles, la càrrega des de format extern, les operacions bàsiques de joc, el càlcul de veïns i la validació estructural del taulell.
+
+ALTRES ELEMENTS INTEGRATS
+- Classe Cella: s’utilitza internament com a unitat bàsica del taulell.
+- Format extern d’Hidato: es prova la interpretació dels símbols #, * i ? segons l’especificació del format.
+
+FITXERS DE DADES NECESSARIS
+Cap. Les dades de prova es construeixen directament dins dels tests.
+
+VALORS ESTUDIATS
+- Casos convencionals: taulells quadrats petits, pistes inicials i col·locació de números.
+- Casos límit: posicions fora de rang, forats, fora d’àrea, valors duplicats i valors fora del rang permès.
+- Càrrega externa: interpretació correcta de capçalera i contingut del format Hidato.
+- Connectivitat: comprovació de taulells connexos i no connexos.
+
+EFECTES ESTUDIATS
+- Inicialització correcta de la mida, forma, adjacència i nombre de caselles jugables.
+- Funcionament dels mètodes esCasellaValida, esCasellaUsable, potPosarNumero, posarNumero, buscarPerValor i NumerosDisponibles.
+- Funcionament dels mètodes de càrrega carregarDesDeLinies i carregarDesDeFormatExtern.
+- Obtenció correcta de veïns i validació de la connectivitat del taulell.
+
+PROVA
+"JUnit version 4.13.2
+....................
+Time: 0,011
+
+OK (20 tests)"
+
+NOTA: Amb la implementació actual, una casella amb número col·locat pel jugador deixa de ser editable, i per tant no es pot buidar amb buidarCasella.

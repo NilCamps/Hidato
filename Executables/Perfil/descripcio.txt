@@ -1,0 +1,20 @@
+OBJECTE DE LA PROVA
+Test unitari de la classe del model Perfil. Es proven els casos d'us de creacio de perfil i edicio de dades personals, verificant la integritat de la informacio emmagatzemada.
+
+ALTRES ELEMENTS INTEGRATS
+Classe Estadistiques. Es una classe ja provada que s'integra aqui perque el Perfil l'instancia automaticament en el seu constructor per mantenir l'associacio.
+
+FITXERS DE DADES NECESSARIS
+Cap.
+
+VALORS ESTUDIATS
+- Casos convencionals: Cadenes de caracters (Strings) estandard per a nom, cognom, usuari i contrasenya.
+- Casos limit: Utilitzacio de cadenes buides ("") per comprovar que el model les accepta correctament (tecnica de caixa negra).
+- Validacio de l'estat: Comprovacio que l'objecte Estadistiques vinculat no sigui nul despres de la construccio.
+
+EFECTES ESTUDIATS
+- Assignacio correcta dels atributs de l'objecte mitjançant el constructor.
+- Funcionament dels metodes modificadors (setters) i la seva persistencia en memoria.
+- Verificacio de la referencia correcta a l'objecte Estadistiques creat internament.
+
+! NOTA : Amb el disseny que hem fet, la classe Perfil no realitza validacions de format o seguretat, ja que aquestes son responsabilitat dels controladors d'usuari. Ates que la gestio completa d'usuaris es funcionalitat del lliuraments futurs, aquest test es centra exclusivament en la integritat de les dades i l'estat de l'objecte. !

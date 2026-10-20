@@ -1,0 +1,19 @@
+OBJECTE DE LA PROVA
+Test unitari de la classe del model Estadistiques. Es proven la inicialitzacio i el seguiment de les metriques de joc de l'usuari (partides jugades, completades i puntuacions).
+
+ALTRES ELEMENTS INTEGRATS
+Classe Perfil. Es necessita un objecte Perfil per a la construccio de les estadistiques i per verificar la relacio bidireccional entre ambdues classes del model.
+
+FITXERS DE DADES NECESSARIS
+Cap.
+
+VALORS ESTUDIATS
+- Casos inicials: Verificacio dels valors per defecte (zeros i 0.0f) establerts pel constructor.
+- Casos convencionals: Valors enters i decimals positius que representen el progres normal d'un usuari.
+- Casos limit: Insercio de valors negatius per comprovar que el model els accepta correctament (tecnica de caixa negra).
+
+EFECTES ESTUDIATS
+- Persistencia correcta dels comptadors de partides i puntuacions mitjanes en memoria.
+- Integritat del vincle amb l'objecte Perfil propietari de les estadistiques.
+
+! NOTA: Amb el disseny que hem fet, la classe Estadistiques no realitza validacions de rang o de signe (com ara impedir valors negatius), ja que aquestes son responsabilitat exclusiva dels controladors d'usuari. Ates que la gestio completa d'usuaris es funcionalitat del lliuraments futurs, aquest test es centra en la integritat de les dades i l'estat de l'objecte. !

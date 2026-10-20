@@ -1,0 +1,7 @@
+Aquest directori conté:
+1. Documents => Directori amb tots els documents que raonen les eleccions de sistema i algorismia.
+2. Executables => Directori amb els jocs de proves i tests necessaris per cada classe.
+3. Fonts => Directori amb els fitxers necessaris per executar el projecte.
+4. Doxyfile => Fitxer encarregat de generar una web on es mostren els detalls del codi del projecte.
+5. equip.txt => Fitxer amb la informació dels integrants del grup.
+6. instruccionsDelProjecte.txt => Fitxer d'ajuda per saber on i com compilar o executar les diferents part del projecte.

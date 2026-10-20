@@ -1,0 +1,11 @@
+2
+Q,CA,2,2
+1,2
+?,4
+4
+--- MENÚ PRINCIPAL ---
+Escull una de les 3 opcions amb el número corresponent
+1 - Cargar Hidato
+2 - Validar Hidato
+3 - Resolver Hidato (Solución única)
+4 - Acabar prova

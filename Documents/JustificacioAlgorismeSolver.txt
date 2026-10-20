@@ -1,0 +1,48 @@
+Projecte PROP - Hidato
+Grup 41.4
+Camps, Nil / Lopez, Carlos / Rodriguez, Imanol  / Arnau Rodriguez Trocho / Rossell, Jaume
+Versio 1.0 (format: lliurament.revisio)
+
+    Justificació de l'algoritme DFS
+    Introducció
+    L'algoritme Depth-First Search (DFS) és especialment adequat per a problemes de cerca
+    exhaustiva. En el cas del trencaclosques Hidato, on cal construir una seqüència numèrica
+    contínua respectant restriccions d'adjacència, DFS ofereix un marc natural i eficient per
+    explorar totes les possibles configuracions del taulell.
+    Per què DFS és adequat
+    1. Exploració profunda i seqüencial
+    DFS segueix un camí fins al final abans de provar alternatives. En un hidat, això encaixa
+    perfectament amb la naturalesa del problema, ja que:
+        a) La seqüència numèrica és lineal (1, 2, 3, ...).
+        b) Cada pas depèn directament del pas anterior.
+        c) És necessari comprovar si un camí complet pot portar fins al nombre màxim.
+
+    2. Facilitat per implementar backtracking
+    El Hidato requereix provar opcions i desfer-les si no funcionen. DFS incorpora el
+    backtracking de manera natural:
+        a) Assigna un valor provisional.
+        b) Continua la cerca.
+        c) Si no hi ha solució, desfà el moviment.
+    Aquesta simplicitat estructural fa que el codi sigui clar, modular i fàcil de mantenir.
+
+    3. Eficiència espacial
+    DFS només necessita mantenir:
+        a) L'estat actual del taulell.
+        b) La profunditat de la seqüència.
+    A diferència d'altres estratègies com BFS, que requereixen emmagatzemar múltiples estats
+    simultàniament, DFS utilitza memòria proporcional a la profunditat del camí.
+
+    4. Adaptació natural a restriccions
+    El Hidato sovint inclou nombres fixats, forats o cel·les no disponibles, i/o zones estretes que
+    limiten moviments.
+    DFS permet incorporar aquestes restriccions de manera immediata:
+        a) Si el següent nombre està fixat, només cal comprovar si és veí.
+        b) Si no ho és, es proven només les cel·les buides.
+    Això redueix dràsticament l'espai de cerca i accelera la resolució.
+
+    Conclusions
+    L'elecció de DFS per resoldre un hidat és justificada per diversos motius:
+        a) S'adapta a la naturalesa seqüencial del trencaclosques.
+        b)Permet implementar backtracking de manera clara i eficient.
+        c) Gestiona bé les restriccions pròpies del taulell.
+        d) Ofereix un consum de memòria reduït.

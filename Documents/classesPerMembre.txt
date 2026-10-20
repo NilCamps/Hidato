@@ -1,0 +1,14 @@
+Projecte PROP - Hidato
+Grup 41.4
+Camps, Nil / Lopez, Carlos / Rodriguez, Imanol  / Arnau Rodriguez Trocho / Rossell, Jaume
+Versio 1.0 (format: lliurament.revisio)
+
+Camps, Nil => Taulell.java Cella.java ComprovarHidato.java
+
+Lopez, Carlos => CtrlDomini.java CtrlPresentacio.java DirectoriHidatos.java CtrlInteraccio.java (La part de la lectura d'un hidato a partir d'un fitxer).
+
+Rodriguez, Imanol  => Estadistiques.java Perfil.java EntradaRankings.java CtrlCargarPerfil.java CtrlPerfil.java CtrlCrearPerfil.java CtrlEditarPerfil.java CtrlEstadistiques.java
+
+Arnau Rodriguez Trocho => VistaPresentacio.java Partida.java CtrlPartida.java Dificultat.java + (Diferents tipus de partida i els seus controladors no acabats).
+
+Rossell, Jaume => ValidarHidato.java SolucionarHidato.java SolucioUnica.java CrearHidato.java

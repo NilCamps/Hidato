@@ -1,0 +1,27 @@
+Projecte PROP - Hidato
+Grup 41.4
+Camps, Nil / Lopez, Carlos / Rodriguez, Imanol  / Arnau Rodriguez Trocho / Rossell, Jaume
+Versio 1.0 (format: lliurament.revisio)
+
+COMPILACIO I EXECUCIO DEL PROJECTE:
+    Cal entrar al subdirectori Fonts > cd Fonts
+    Un cop dins pots fer:
+        make all => Compila totes les classes en els seus .class dins el directori bin i genera el executable HIDATO.jar
+        make run => Executa app.jar
+        make clean => Borra tots els .class i app.jar
+
+COMPILACIO I EXECUCIO DELS TESTS DEL PROJECTE:
+    Cal entrar al subdirectori Executables > cd Executables
+    Per fer els tests del projecte en general (es troben dins de de Execucio/JocDeProves) un cop estiguin les classes compilades:
+    (Desde Executables) bash JuegoDePruebas/run_tests.sh
+
+
+DOCUMENTACIO DOXYFILE:
+    Es pot fer desde el directori principal
+        doxygen Doxyfile => Genera el html
+        open html/index.html => Obre el html en un navegador
+
+DOCUMENTACIO GENERAL:
+    Dins la carpeta Documents es troba tota la Documentació que requereix el projecte.
+
+

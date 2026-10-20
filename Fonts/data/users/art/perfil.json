@@ -1,0 +1,12 @@
+{
+  "name": "a",
+  "surname": "rt",
+  "username": "art",
+  "password": "123",
+  "estadistiques": {
+    "hidatosJugats": 1,
+    "hidatosCompletats": 1,
+    "puntuacioMitjana": 195.0,
+    "millorPuntuacio": 195.0
+  }
+}

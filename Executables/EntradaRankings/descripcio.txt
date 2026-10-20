@@ -1,0 +1,18 @@
+OBJECTE DE LA PROVA
+Test unitari de la classe del model EntradaRanking. Es proven la construccio i la modificacio dels parells usuari-valor que formen les entrades basiques dels rankings.
+
+ALTRES ELEMENTS INTEGRATS
+Cap. Es tracta d'una classe independent que serveix com a estructura de dades basica per a la classe rankings del sistema.
+
+FITXERS DE DADES NECESSARIS
+Cap.
+
+VALORS ESTUDIATS
+- Casos convencionals: Identificadors de text estandard i valors numerics de puntuacio positius (tipus float).
+- Casos limit: Utilitzacio de cadenes buides ("") i puntuacions negatives per verificar que l'estructura les emmagatzema sense alteracions (tecnica de caixa negra).
+
+EFECTES ESTUDIATS
+- Assignacio correcta de valors en el moment de la construccio de l'objecte.
+- Consistencia entre els metodes modificadors (setters) i els metodes consultors (getters).
+
+! NOTA: Amb el disseny que hem fet, la classe EntradaRanking no realitza validacions sobre el format de l'ID o el signe de la puntuacio, ja que aquestes son responsabilitat dels controladors i la classe Rankings que es la que utilitza aquesta classe. Ates que la gestio completa d'usuaris es funcionalitat del lliuraments futurs, aquest test es centra en la integritat de les dades i l'estat de l'objecte. !

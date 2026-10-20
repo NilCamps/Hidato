@@ -1,0 +1,181 @@
+DOCUMENTACION DE LA CAPA DE PERSISTENCIA
+Subgrup 41.4 - PROP (FIB-UPC)
+===============================================================
+
+
+1. ESTADO INICIAL DE LA ENTREGA 1
+------------------------------------
+
+En la primera entrega del proyecto, la gestion del estado y los datos 
+estaban completamente ligados a la memoria RAM. 
+Un caso claro era el CtrlPerfil, que guardaba todos los usuarios con un
+  - HashMap<String, Perfil> cjtPerfils;
+
+Esta aproximacion presentaba limitaciones:
+  - Volatilidad: Cualquier progreso, partida o usuario nuevo 
+    se perdia al cerrar la aplicacion.
+  - Uso ineficiente de la memoria: Mantener todos los usuarios registrados 
+    cargados en la memoria RAM degrada el rendimiento a medida que 
+    la base de datos crece.
+
+
+2. POSIBLES SOLUCIONES
+----------------------------
+
+Tras investigar como implementar la capa de persistencia, vimos que habia
+varias maneras de hacerla, dependiendo de que tanta informacion necesitamos
+que este si o si en memoria:
+
+  A) Carga Completa (Eager Loading):
+     Al arrancar el sistema, se leen todos los archivos de la capa de
+     permanencia y se cargan en memoria para poder acceder rapidamente.
+     - Pros: Acceso instantaneo a cualquier dato durante la ejecucion.
+     - Contras: Tiempo de arranque muy lento y uso de memoria innecesario
+                para toda la informacion de los otros usuarios.
+
+  B) Carga Bajo Demanda (Lazy Loading):
+     El sistema arranca con la memoria limpia. Solo se realiza la 
+     lectura de los archivos en el momento exacto en los que son necesarios.
+     - Pros: Tiempo de arranque menor, solo se mantienen en memoria los 
+             archivos necesarios.
+     - Contras: Hay que ir pidiendo diferentes archivos cuando se requieran.
+
+
+3. SOLUCION IMPLEMENTADA
+-------------------------
+
+Se ha optado por implementar un Lazy Loading con alguna informacion siempre
+cargada en RAM.
+Por lo tanto:
+  - Hemos eliminado el HashMap de CtrlPerfil.
+  - La memoria RAM solo almacena el "Perfil perfilActivo".
+  - Los ranquings y el repositorio de Hidatos si se cargan 
+    al inicio ya que son datos globales y compartidos por todos los usuarios.
+
+
+4. TECNOLOGIA UTILIZADA 
+------------------------
+
+Para el formato en el que guardamos los datos, hemos elegido usar JSON (
+JavaScript Object Notation). Este es un formato estandar para representar
+y guardar informacion.
+
+Para poder usar ese formato de una forma mas comoda, hemos añadido la
+libreria de Google GSON (Google JSON). Con esta podemos convertir nuestros
+objetos de Java a un formato JSON y viceversa; de manera que nos ahorramos
+tener que programar nuestro propio parser.
+
+
+5. ESTRUCTURA DE DIRECTORIOS (/data)
+-------------------------------------
+
+Para organizar la persistencia, hemos diseñado una estructura de directorios
+en forma de arbol donde tenemos un directorio para los rankings, otro para
+los diferentes repositorios de Hidatos y finalmente uno para users, donde
+cada usuario tiene su directorio propio con la informacion personal.
+
+- La estructura es la siguiente:
+
+data/
+  ├── rankings/
+  │     └── rankings.json
+  ├── repositoris/
+  │     ├── originals/     (Hidatos vacios para jugar)
+  │     └── solucions/     (Hidatos resueltos para comprobar)
+  └── users/
+        └── {username}/
+              ├── perfil.json
+              └── partidas/
+                    ├── Partida1.json
+                    └── Partida2.json
+
+Justificacion:
+  - users/: Aisla las partidas y datos de cada usuario en su propia 
+    carpeta, garantizando privacidad y evitando colisiones de nombres.
+  - repositoris/: Separa los tableros iniciales de las soluciones para 
+    tenerlos siempre diferenciados y que no haya confusion.
+  - rankings/: Lo hemos guardado por separado ya que no tiene nada que ver
+    con los otros datos que guardamos.
+
+
+6. DIAGRAMA DE DISTRIBUCION DE DATOS
+-------------------------------------
+
+Distribucion del ciclo de vida de los datos durante una sesion activa:
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │                         MEMORIA RAM                         │
+  │                     (Ocupacion Minima)                      │
+  │                                                             │
+  │   [ Perfil perfilActivo ]            (1 instancia actual)   │
+  │   [ Rankings ]                       (Singleton Rankings)   │
+  │   [ DirectoriHidatos ]               (Todos los hidatos)    │
+  └─────────────────────────────────────────────────────────────┘
+  ===============================================================
+  ┌─────────────────────────────────────────────────────────────┐
+  │                      DISCO DURO (/data)                     │
+  │                        (Permanente)                         │
+  │                                                             │
+  │   /users/{username}/* → Perfiles inactivos/Partidas         │
+  │   /repositoris/originals/* → Todos los Hidatos              │
+  │   /repositoris/solucions/* → Soluciones precalculadas       │
+  │   /rankings/rankings.json     → Tops de los rankings        │
+  └─────────────────────────────────────────────────────────────┘
+
+
+7. APUNTES
+-------------------------------------
+
+La informacion del perfil activo la tenemos en memoria RAM, pero para 
+asegurarnos de que en caso de que si la aplicacion se cierra de forma
+inesperada, no perdamos los datos siempre los datos, hemos hecho que cada
+vez que el perfil acaba una partida, se actualiza la informacion en disco
+de este usuario. 
+Ademas, en ese momento tambien se actualizan y se guardan los Rankings en
+memoria, esto es posible (sin necesidad ni de tener todos los usuarios ni
+tampoco los usuarios que los conforman en memoria) ya que los rankings
+funcionan simplemente con el {username} y la {puntuacion}, por lo que se
+hace muy rapidamente e independiente.
+
+
+
+8. JUSTIFICACION DEL PORQUE UN CONTROLADOR UNICO
+---------------------------------------------------------
+
+Cuando estabamos pensando en la capa de persistencia, evaluamos la posibilidad
+de dividir el CtrlPersistencia en diferentes controladores mas especializados,
+como en el caso del CtrlPerfil, y tener un CtrlPersistenciaUsers, 
+CtrlPersistenciaRepositoris y CtrlPersistenciaRankings, para implementar un
+patron de diseño DAO (Data Access Object) o Repository.
+
+Pero al final nos decantamos por centralizarlo todo por los siguientes motivos:
+
+  - Evitar el "overengineering": Los patrones anteriores son muy utiles en
+	aplicaciones reales cuando tenemos bases de datos con peticiones complejas.
+	Pero en nuestro caso no, en esta asignatura con tener una estructura simple
+	de archivos JSON organizados correctamente nos sirve, ademas de que no
+	podemos usar bases de datos. Al final, es complicarnos para algo que 
+	realmente no lo requiere. Los datos guardados son sencillos y tienen una
+	estructura clara.
+
+
+  - Como no podiamos usar bases de datos, lo que mas sentido tenia era hacer
+	algo que se asemejara y que ocultara toda la complejidad de esta capa a mis
+	compañeros. Por lo que el controlador actua como un Patron Facade, este 
+	patron enmascara toda la complejidad de la I/O al disco,haciendo mas facil 
+	para el resto el uso de los datos guardados en disco. Ademas, actua como
+	un servidor que expone una API con metodos sencillos y claros.
+
+  - Aunque parezca que el controlador asume mucha responsabilidad al encargarse
+    de la persistencia de todo, en realidad, como ya he dicho, funciona como un
+    servidor puro. Los metodos que tiene dentro son independientes entre ellos
+    (guardar los rankings no afecta de ninguna manera ni interactua con ningun
+    otro directorio). Por lo tanto, no hay ni problemas de acoplamiento interno
+    ni tampoco es una clase ininteligible.
+
+  - Eficiencia de la Instancia Unica: El CtrlPersistencia es un objeto sin
+    estado (stateless), ya que en realidad el unico atributo que tiene es el
+    String de la  ruta raiz /data. Esto nos permite declarar una unica instancia
+    al iniciar el programa y mantenerla en memoria durante el juego. Asi nos
+    evitamos tener que estar instanciando y esperando a que el Garbage Collector
+    de Java le apetezca liberar la memoria.

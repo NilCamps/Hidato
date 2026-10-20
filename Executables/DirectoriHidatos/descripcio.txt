@@ -1,0 +1,32 @@
+OBJECTE DE LA PROVA
+Test de la classe del model DirectoriHidatos.
+
+FUNCIONALITAT PROVADA
+Es proven els casos d'ús de registre de nous Hidatos, recuperació de taulells originals i les seves solucions, i la gestió de l'estat intern del directori.
+
+ALTRES ELEMENTS INTEGRATS
+- Classe Taulell: S'utilitza per instanciar els objectes que s'emmagatzemen al directori.
+- Algorismes de solució: Invocats indirectament mitjançant el mètode afegirHidato per generar la solució.
+
+FITXERS DE DADES NECESSARIS
+Cap.
+
+VALORS ESTUDIATS
+- Casos convencionals: Inserció de taulells amb codis únics i comprovació de la seva existència.
+- Casos límit: Intent d'afegir un Hidato amb un codi que ja existeix en el directori.
+- Validació de l'estat: Seguiment de l'atribut maxCodi i verificació que el nombre total d'Hidatos creix correctament.
+
+EFECTES ESTUDIATS
+- Emmagatzematge correcte en els HashMaps.
+- Funcionament del mètode de cerca (getHidato i getHidatoSolucio).
+- Comprovació que la solució es genera i s'emmagatzema en el moment de l'addició.
+
+PROVA
+    "JUnit version 4.13.2
+    ..Ja existeix un Hidato amb aquest Codi.
+    ....
+    Time: 0,035
+
+    OK (6 tests)"
+
+NOTA: La classe confia en que l'objecte Taulell passat com a paràmetre és vàlid.

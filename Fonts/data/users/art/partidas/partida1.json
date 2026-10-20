@@ -1,0 +1,254 @@
+{
+  "tipo": "NORMAL",
+  "partida": {
+    "errors": 0,
+    "t": {
+      "codi": 0,
+      "files": 4,
+      "columnes": 4,
+      "celles": [
+        [
+          {
+            "posX": 0,
+            "posY": 0,
+            "valor": 3,
+            "casellaInicial": false
+          },
+          {
+            "posX": 0,
+            "posY": 1,
+            "valor": 2,
+            "casellaInicial": true
+          },
+          {
+            "posX": 0,
+            "posY": 2,
+            "valor": 0,
+            "casellaInicial": false
+          },
+          {
+            "posX": 0,
+            "posY": 3,
+            "valor": 0,
+            "casellaInicial": false
+          }
+        ],
+        [
+          {
+            "posX": 1,
+            "posY": 0,
+            "valor": 4,
+            "casellaInicial": false
+          },
+          {
+            "posX": 1,
+            "posY": 1,
+            "valor": 1,
+            "casellaInicial": true
+          },
+          {
+            "posX": 1,
+            "posY": 2,
+            "valor": 16,
+            "casellaInicial": true
+          },
+          {
+            "posX": 1,
+            "posY": 3,
+            "valor": 0,
+            "casellaInicial": false
+          }
+        ],
+        [
+          {
+            "posX": 2,
+            "posY": 0,
+            "valor": 5,
+            "casellaInicial": false
+          },
+          {
+            "posX": 2,
+            "posY": 1,
+            "valor": 0,
+            "casellaInicial": false
+          },
+          {
+            "posX": 2,
+            "posY": 2,
+            "valor": 0,
+            "casellaInicial": false
+          },
+          {
+            "posX": 2,
+            "posY": 3,
+            "valor": 0,
+            "casellaInicial": false
+          }
+        ],
+        [
+          {
+            "posX": 3,
+            "posY": 0,
+            "valor": 6,
+            "casellaInicial": false
+          },
+          {
+            "posX": 3,
+            "posY": 1,
+            "valor": 0,
+            "casellaInicial": false
+          },
+          {
+            "posX": 3,
+            "posY": 2,
+            "valor": 0,
+            "casellaInicial": false
+          },
+          {
+            "posX": 3,
+            "posY": 3,
+            "valor": 0,
+            "casellaInicial": false
+          }
+        ]
+      ],
+      "n_caselles": 16,
+      "adjacencia": "C",
+      "forma": "QUADRAT"
+    },
+    "t_resolt": {
+      "codi": 0,
+      "files": 4,
+      "columnes": 4,
+      "celles": [
+        [
+          {
+            "posX": 0,
+            "posY": 0,
+            "valor": 3,
+            "casellaInicial": false
+          },
+          {
+            "posX": 0,
+            "posY": 1,
+            "valor": 2,
+            "casellaInicial": true
+          },
+          {
+            "posX": 0,
+            "posY": 2,
+            "valor": 15,
+            "casellaInicial": false
+          },
+          {
+            "posX": 0,
+            "posY": 3,
+            "valor": 14,
+            "casellaInicial": false
+          }
+        ],
+        [
+          {
+            "posX": 1,
+            "posY": 0,
+            "valor": 4,
+            "casellaInicial": false
+          },
+          {
+            "posX": 1,
+            "posY": 1,
+            "valor": 1,
+            "casellaInicial": true
+          },
+          {
+            "posX": 1,
+            "posY": 2,
+            "valor": 16,
+            "casellaInicial": true
+          },
+          {
+            "posX": 1,
+            "posY": 3,
+            "valor": 13,
+            "casellaInicial": false
+          }
+        ],
+        [
+          {
+            "posX": 2,
+            "posY": 0,
+            "valor": 5,
+            "casellaInicial": false
+          },
+          {
+            "posX": 2,
+            "posY": 1,
+            "valor": 8,
+            "casellaInicial": false
+          },
+          {
+            "posX": 2,
+            "posY": 2,
+            "valor": 9,
+            "casellaInicial": false
+          },
+          {
+            "posX": 2,
+            "posY": 3,
+            "valor": 12,
+            "casellaInicial": false
+          }
+        ],
+        [
+          {
+            "posX": 3,
+            "posY": 0,
+            "valor": 6,
+            "casellaInicial": false
+          },
+          {
+            "posX": 3,
+            "posY": 1,
+            "valor": 7,
+            "casellaInicial": false
+          },
+          {
+            "posX": 3,
+            "posY": 2,
+            "valor": 10,
+            "casellaInicial": false
+          },
+          {
+            "posX": 3,
+            "posY": 3,
+            "valor": 11,
+            "casellaInicial": false
+          }
+        ]
+      ],
+      "n_caselles": 16,
+      "adjacencia": "C",
+      "forma": "QUADRAT"
+    },
+    "puntuacio": 0.0,
+    "inicio": "2026-05-25T17:23:04.238477Z",
+    "tpartida": "PT0S",
+    "NumerosDisponibles": [
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "d": {
+      "npistes": 3,
+      "undos": true,
+      "multiplicador": 1.5
+    },
+    "casellesBuidesInicials": 13
+  }
+}
